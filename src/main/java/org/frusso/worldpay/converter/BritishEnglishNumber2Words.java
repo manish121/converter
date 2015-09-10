@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 public class BritishEnglishNumber2Words {
 
     private static final String AND = " and";
-    
+
     private static final String[] TENS_NAMES = {
             "",
             " ten",

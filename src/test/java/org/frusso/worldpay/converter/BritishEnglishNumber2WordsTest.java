@@ -9,11 +9,6 @@ public class BritishEnglishNumber2WordsTest extends TestCase {
 
     private final BritishEnglishNumber2Words UNDERLYING_OBJECT = new BritishEnglishNumber2Words();
 
-    public void setUp() throws Exception {
-        super.setUp();
-
-    }
-
     @Test
     public void convertCurrentPart() throws Exception {
         Method privateMethod = BritishEnglishNumber2Words.class.getDeclaredMethod("convertCurrentPart", Integer.class);

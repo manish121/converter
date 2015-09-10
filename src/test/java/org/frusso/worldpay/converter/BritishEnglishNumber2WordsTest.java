@@ -1,13 +1,27 @@
 package org.frusso.worldpay.converter;
 
-import junit.framework.TestCase;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Method;
+import java.security.InvalidParameterException;
 
-public class BritishEnglishNumber2WordsTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class BritishEnglishNumber2WordsTest {
 
     private final BritishEnglishNumber2Words UNDERLYING_OBJECT = new BritishEnglishNumber2Words();
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
+    @Test
+    public void testCurrentInvalidParameterException() {
+        expectedException.expect(InvalidParameterException.class);
+        expectedException.expectMessage("The input value must be between 0 and 999999999");
+        BritishEnglishNumber2Words.convert(-1);
+    }
 
     @Test
     public void convertCurrentPart() throws Exception {

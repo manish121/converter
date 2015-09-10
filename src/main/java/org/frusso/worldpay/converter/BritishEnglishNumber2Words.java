@@ -1,5 +1,6 @@
 package org.frusso.worldpay.converter;
 
+import java.security.InvalidParameterException;
 import java.text.DecimalFormat;
 
 public class BritishEnglishNumber2Words {
@@ -42,7 +43,7 @@ public class BritishEnglishNumber2Words {
             " nineteen"
     };
 
-    private static final DecimalFormat decimalFormat = new DecimalFormat("000000000000");
+    private static final DecimalFormat decimalFormat = new DecimalFormat("000000000");
 
     public static void main(String[] args) {
         System.out.println(BritishEnglishNumber2Words.convert(0));
@@ -75,19 +76,19 @@ public class BritishEnglishNumber2Words {
         return result.isEmpty() ? NUMBERS_NAMES[number] + " hundred" + result : NUMBERS_NAMES[number] + " hundred" + AND + result;
     }
 
-    public static String convert(long number) {
+    public static String convert(int number) {
+        if (number < 0 || number > 999999999)
+            throw new InvalidParameterException("The input value must be between 0 and 999999999");
+
         if (number == 0) return "zero";
 
         final String stringNumber =  decimalFormat.format(number);
 
-        final int billions = Integer.parseInt(stringNumber.substring(0, 3));
-        final int millions = Integer.parseInt(stringNumber.substring(3, 6));
-        final int hundredThousands = Integer.parseInt(stringNumber.substring(6, 9));
-        final int thousands = Integer.parseInt(stringNumber.substring(9, 12));
+        final int millions = Integer.parseInt(stringNumber.substring(0, 3));
+        final int hundredThousands = Integer.parseInt(stringNumber.substring(3, 6));
+        final int thousands = Integer.parseInt(stringNumber.substring(6, 9));
 
         StringBuffer result = new StringBuffer();
-
-        if (billions != 0) result.append(convertCurrentPart(billions) + " billion ");
 
         if (millions != 0) result.append(convertCurrentPart(millions) + " million ");
 

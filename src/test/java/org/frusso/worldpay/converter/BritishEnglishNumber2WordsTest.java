@@ -11,8 +11,6 @@ import static org.junit.Assert.assertEquals;
 
 public class BritishEnglishNumber2WordsTest {
 
-    private final BritishEnglishNumber2Words UNDERLYING_OBJECT = new BritishEnglishNumber2Words();
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -25,17 +23,17 @@ public class BritishEnglishNumber2WordsTest {
 
     @Test
     public void convertCurrentPart() throws Exception {
-        Method privateMethod = BritishEnglishNumber2Words.class.getDeclaredMethod("convertCurrentPart", Integer.class);
-        privateMethod.setAccessible(true);
+        Method underTest = BritishEnglishNumber2Words.class.getDeclaredMethod("convertCurrentPart", Integer.class);
+        underTest.setAccessible(true);
 
-        assertEquals(" one", privateMethod.invoke(UNDERLYING_OBJECT, 1));
-        assertEquals(" one hundred", privateMethod.invoke(UNDERLYING_OBJECT, 100));
-        assertEquals(" two hundred", privateMethod.invoke(UNDERLYING_OBJECT, 200));
-        assertEquals(" ten", privateMethod.invoke(UNDERLYING_OBJECT, 10));
-        assertEquals("", privateMethod.invoke(UNDERLYING_OBJECT, 0));
-        assertEquals(" nine hundred and ninety nine", privateMethod.invoke(UNDERLYING_OBJECT, 999));
-        assertEquals(" nine hundred and nine", privateMethod.invoke(UNDERLYING_OBJECT, 909));
-        assertEquals(" one hundred and nineteen", privateMethod.invoke(UNDERLYING_OBJECT, 119));
+        assertEquals(" one", underTest.invoke(null, 1));
+        assertEquals(" one hundred", underTest.invoke(null, 100));
+        assertEquals(" two hundred", underTest.invoke(null, 200));
+        assertEquals(" ten", underTest.invoke(null, 10));
+        assertEquals("", underTest.invoke(null, 0));
+        assertEquals(" nine hundred and ninety nine", underTest.invoke(null, 999));
+        assertEquals(" nine hundred and nine", underTest.invoke(null, 909));
+        assertEquals(" one hundred and nineteen", underTest.invoke(null, 119));
     }
 
     @Test

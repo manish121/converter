@@ -1,4 +1,4 @@
-package org.frusso.worldpay.converter;
+package org.frusso.benumber2wordsconverter;
 
 import java.security.InvalidParameterException;
 import java.text.DecimalFormat;

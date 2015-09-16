@@ -1,8 +1,6 @@
 package org.frusso.worldpay.converter;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
@@ -11,19 +9,9 @@ import static org.junit.Assert.assertEquals;
 
 public class BritishEnglishNumber2WordsTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
-    public void testCurrentInvalidParameterException() {
-        expectedException.expect(InvalidParameterException.class);
-        expectedException.expectMessage("The input value must be between 0 and 999999999");
-        BritishEnglishNumber2Words.convert(-1);
-    }
-
-    @Test
-    public void convertCurrentPart() throws Exception {
-        Method underTest = BritishEnglishNumber2Words.class.getDeclaredMethod("convertCurrentPart", Integer.class);
+    public void testParse() throws Exception {
+        Method underTest = BritishEnglishNumber2Words.class.getDeclaredMethod("parse", Integer.class);
         underTest.setAccessible(true);
 
         assertEquals(" one", underTest.invoke(null, 1));
@@ -38,6 +26,18 @@ public class BritishEnglishNumber2WordsTest {
 
     @Test
     public void testConvert() {
+        try{
+            BritishEnglishNumber2Words.convert(-1);
+        } catch (InvalidParameterException e) {
+            assertEquals("The input value must be between 0 and 999999999", e.getMessage());
+        }
+
+        try{
+            BritishEnglishNumber2Words.convert(Integer.MAX_VALUE);
+        } catch (InvalidParameterException e) {
+            assertEquals("The input value must be between 0 and 999999999", e.getMessage());
+        }
+
         assertEquals("zero", BritishEnglishNumber2Words.convert(0));
         assertEquals("one", BritishEnglishNumber2Words.convert(1));
         assertEquals("twenty one", BritishEnglishNumber2Words.convert(21));

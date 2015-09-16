@@ -2,12 +2,11 @@ package org.frusso.worldpay.converter;
 
 import java.security.InvalidParameterException;
 import java.text.DecimalFormat;
+import java.util.LinkedList;
 
 public class BritishEnglishNumber2Words {
 
-    private static final String AND = " and";
-
-    private static final String[] TENS_NAMES = {
+    private static final String[] TENS = {
             "",
             " ten",
             " twenty",
@@ -20,7 +19,7 @@ public class BritishEnglishNumber2Words {
             " ninety"
     };
 
-    private static final String[] NUMBERS_NAMES = {
+    private static final String[] NUMBERS = {
             "",
             " one",
             " two",
@@ -51,6 +50,7 @@ public class BritishEnglishNumber2Words {
         System.out.println(BritishEnglishNumber2Words.convert(21));
         System.out.println(BritishEnglishNumber2Words.convert(105));
         System.out.println(BritishEnglishNumber2Words.convert(123));
+        System.out.println(BritishEnglishNumber2Words.convert(1105));
         System.out.println(BritishEnglishNumber2Words.convert(1005));
         System.out.println(BritishEnglishNumber2Words.convert(1042));
         System.out.println(BritishEnglishNumber2Words.convert(1105));
@@ -58,22 +58,24 @@ public class BritishEnglishNumber2Words {
         System.out.println(BritishEnglishNumber2Words.convert(999999999));
     }
 
-    private static String convertCurrentPart(Integer number) {
-        String result;
-        if (number % 100 < 20) {
-            result = NUMBERS_NAMES[number % 100];
-            number /= 100;
+    private static String parse(Integer value) {
+        String result = "";
+        if (value % 100 < 20) {
+            result = NUMBERS[value % 100];
+            value /= 100;
         } else {
-            result = NUMBERS_NAMES[number % 10];
-            number /= 10;
+            result = NUMBERS[value % 10];
+            value /= 10;
 
-            result = TENS_NAMES[number % 10] + result;
-            number /= 10;
+            result = TENS[value % 10] + result;
+            value /= 10;
         }
 
-        if (number == 0) return result;
+        if (value != 0) {
+            result = NUMBERS[value] + " hundred" + (result.isEmpty() ? "" : " and") + result;
+        }
 
-        return result.isEmpty() ? NUMBERS_NAMES[number] + " hundred" + result : NUMBERS_NAMES[number] + " hundred" + AND + result;
+        return result;
     }
 
     public static String convert(int number) {
@@ -82,24 +84,31 @@ public class BritishEnglishNumber2Words {
 
         if (number == 0) return "zero";
 
-        final String stringNumber =  decimalFormat.format(number);
+        final String stringNumber = decimalFormat.format(number);
 
-        final int millions = Integer.parseInt(stringNumber.substring(0, 3));
-        final int hundredThousands = Integer.parseInt(stringNumber.substring(3, 6));
-        final int thousands = Integer.parseInt(stringNumber.substring(6, 9));
+        LinkedList<String> values = new LinkedList<>();
+        for (int i = 0, k = 0; i < stringNumber.length(); i = i + 3, k++) {
+            int value = Integer.parseInt(stringNumber.substring(i, i + 3));
+            String current = "";
+            if (value != 0) {
+                current = parse(value);
+                if (i == 0)
+                    current = current + " million";
 
-        StringBuffer result = new StringBuffer();
+                if (i == 3)
+                    current = current + " thousand";
 
-        if (millions != 0) result.append(convertCurrentPart(millions) + " million ");
+                if (i == 6 && value < 100) {
+                    if (!values.peekLast().isEmpty()) {
+                        current = " and" + current;
+                    }
+                }
+            }
 
-        if (hundredThousands != 0) {
-            result.append(convertCurrentPart(hundredThousands) + " thousand ");
-            result.append(thousands < 100 ? AND : "");
+            values.add(current);
         }
 
-        result.append(convertCurrentPart(thousands));
-
-        return result.toString().replaceAll("^\\s+", "").replaceAll("\\b\\s{2,}\\b", " ");
+        return String.join("", values).replaceFirst(" ", "");
     }
 }
 

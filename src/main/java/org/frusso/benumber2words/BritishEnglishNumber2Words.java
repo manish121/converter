@@ -1,4 +1,4 @@
-package org.frusso.benumber2wordsconverter;
+package org.frusso.benumber2words;
 
 import java.security.InvalidParameterException;
 import java.text.DecimalFormat;
@@ -87,7 +87,7 @@ public class BritishEnglishNumber2Words {
         final String stringNumber = decimalFormat.format(number);
 
         LinkedList<String> values = new LinkedList<>();
-        for (int i = 0, k = 0; i < stringNumber.length(); i = i + 3, k++) {
+        for (int i = 0; i < stringNumber.length(); i = i + 3) {
             int value = Integer.parseInt(stringNumber.substring(i, i + 3));
             String current = "";
             if (value != 0) {

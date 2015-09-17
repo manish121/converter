@@ -1,4 +1,4 @@
-package org.frusso.benumber2wordsconverter;
+package org.frusso.benumber2words;
 
 import org.junit.Test;
 
